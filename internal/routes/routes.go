@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/orbulant/stock-screener/internal/handlers"
 )
 
 // Setup routes for the application
@@ -20,4 +21,6 @@ func SetupRoutes(app *fiber.App) {
 			"message": "OK",
 		})
 	})
+
+	app.Get("/stock", handlers.GetStockData)
 }
