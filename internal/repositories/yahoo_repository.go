@@ -3,6 +3,7 @@ package repositories
 import (
 	"fmt"
 
+	"github.com/orbulant/random-user-agent/useragent"
 	"resty.dev/v3"
 )
 
@@ -21,16 +22,22 @@ func FetchStockDataFromAPI() (any, error) {
 
 	resp, err := c.R().Get(url)
 
-	if err != nil {
-		fmt.Println("Error:", err)
+	yres, yerr := c.R().Get(YahooFinanceBaseUrl)
+
+	if err != nil || yerr != nil {
 		return nil, err
 	}
 
 	// Process the response to JSON
 
 	response := resp.String()
+	yresponse := yres.String()
 
 	fmt.Println(response)
+	fmt.Println(yresponse)
+
+	ua := useragent.New().GetRandomAgent()
+	fmt.Println(ua)
 
 	return nil, nil
 }
