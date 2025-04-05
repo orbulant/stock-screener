@@ -6,8 +6,15 @@ import (
 )
 
 func GetStockData(c *fiber.Ctx) error {
-	repositories.FetchStockDataFromAPI()
+	result, err := repositories.FetchStockDataFromAPI()
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to fetch stock data.",
+		})
+	}
+
 	return c.JSON(fiber.Map{
-		"message": "Stock data fetched",
+		"message": result,
 	})
 }

@@ -1,43 +1,24 @@
 package repositories
 
 import (
-	"fmt"
-
 	"github.com/orbulant/random-user-agent/useragent"
 	"resty.dev/v3"
 )
 
 const (
 	YahooFinanceBaseUrl = "https://query1.finance.yahoo.com/v6/finance/options/MSFT"
-	CatUrl              = "https://catfact.ninja/fact"
 )
 
 func FetchStockDataFromAPI() (any, error) {
-	baseUrl := CatUrl
-	url := baseUrl
+	client := resty.New()
 
-	// Using resty, a simple HTTP and REST client library for Go
-	c := resty.New()
-	defer c.Close()
+	userAgent := useragent.New().GetRandomAgent()
 
-	resp, err := c.R().Get(url)
+	res, err := client.R().SetHeader("User-Agent", userAgent).Get(YahooFinanceBaseUrl)
 
-	yres, yerr := c.R().Get(YahooFinanceBaseUrl)
-
-	if err != nil || yerr != nil {
+	if err != nil {
 		return nil, err
 	}
 
-	// Process the response to JSON
-
-	response := resp.String()
-	yresponse := yres.String()
-
-	fmt.Println(response)
-	fmt.Println(yresponse)
-
-	ua := useragent.New().GetRandomAgent()
-	fmt.Println(ua)
-
-	return nil, nil
+	return res.String(), nil
 }
