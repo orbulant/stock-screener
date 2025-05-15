@@ -22,5 +22,7 @@ func SetupRoutes(app *fiber.App) {
 		})
 	})
 
+	app.Get("/parse-example", handlers.GetPDFData)
+
 	app.Get("/stock", handlers.GetStockData)
 }
